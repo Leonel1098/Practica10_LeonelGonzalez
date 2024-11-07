@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Consultar Cliente por Ciudad</title>
+    <link rel="stylesheet" href="static/style_consultar.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Consultar Clientes por Ciudad</h1>
+        <form action="{{ url_for('consultar_cliente') }}" method="post">
+            <label for="ciudad">Ciudad:</label>
+            <input type="text" id="ciudad" name="ciudad" required>
+            <button type="submit">Consultar</button>
+        </form>
+        <p><a href="{{ url_for('index') }}">Volver al inicio</a></p>
+    </div>
+</body>
+</html>

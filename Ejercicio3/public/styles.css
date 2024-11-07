@@ -1,0 +1,76 @@
+/* Reseteamos los márgenes y configuramos la fuente */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f0f0f5; /* Color de fondo suave */
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+  text-align: center;
+}
+
+/* Título principal */
+h1 {
+  color: #2c3e50; /* Gris oscuro */
+  font-size: 2.5em;
+  margin-bottom: 20px;
+}
+
+/* Estilo del contenedor principal */
+#crypto-info {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Sombra más pronunciada */
+  padding: 25px;
+  width: 320px;
+  text-align: center;
+  color: #333;
+  transition: all 0.3s ease; /* Transición suave para cambios */
+  margin-left: 150px; /* Desplaza el contenedor 20px a la derecha */
+}
+
+#crypto-info:hover {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2); /* Más sombra al pasar el mouse */
+  transform: scale(1.05); /* Escala ligera */
+}
+
+/* Estilo para el nombre de la criptomoneda */
+h3 {
+  margin: 0 0 12px;
+  font-size: 1.7em;
+  color: #1abc9c; /* Verde suave */
+}
+
+/* Estilo para los párrafos */
+p {
+  font-size: 1.2em;
+  margin: 10px 0;
+}
+
+/* Estilo específico para el precio */
+.crypto-value {
+  font-weight: bold;
+  color: #27ae60; /* Verde para el precio */
+}
+
+/* Estilo para el cambio de porcentaje */
+.crypto-change {
+  font-weight: bold;
+  color: #e74c3c; /* Rojo para cambios negativos */
+}
+
+/* Estilo para el volumen */
+.crypto-volume {
+  font-weight: bold;
+  color: #3498db; /* Azul para el volumen */
+}
+
+/* Estilo para la fecha */
+.crypto-date {
+  font-size: 0.9em;
+  color: #7f8c8d; /* Gris claro */
+  margin-top: 15px;
+}

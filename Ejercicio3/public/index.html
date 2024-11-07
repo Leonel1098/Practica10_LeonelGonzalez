@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criptomonedas en Tiempo Real</title>
+
+  <!-- Enlace al archivo CSS -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div>
+    <h1>Datos de Criptomonedas en Tiempo Real</h1>
+    <div id="crypto-info">
+      <h3 id="crypto-symbol">Cargando...</h3>
+      <p id="crypto-price">Precio: Cargando...</p>
+      <p id="crypto-change">Cambio: Cargando...</p>
+      <p id="crypto-volume">Volumen: Cargando...</p>
+      <p id="crypto-date">Fecha: Cargando...</p>
+    </div>
+  </div>
+
+  <script>
+    // Establecer la conexión WebSocket
+    const socket = new WebSocket('ws://localhost:8080');  // Cambia la URL si es necesario
+
+    // Manejar el mensaje recibido desde el servidor
+    socket.onmessage = function(event) {
+      const data = JSON.parse(event.data);  // Parseamos los datos recibidos como JSON
+      console.log('Datos recibidos desde el servidor:', data);
+
+      // Comprobamos si los datos existen y luego actualizamos la interfaz
+      if (data.symbol && data.price && data.change && data.volume && data.date) {
+        document.getElementById('crypto-symbol').innerText = data.symbol;
+        document.getElementById('crypto-price').innerText = `Precio: €${data.price.toFixed(2)}`;
+        document.getElementById('crypto-change').innerText = `Cambio: ${data.change.toFixed(2)}%`;
+        document.getElementById('crypto-volume').innerText = `Volumen: €${data.volume.toFixed(2)}`;
+        document.getElementById('crypto-date').innerText = `Fecha: ${new Date(data.date).toLocaleString()}`;
+      } else {
+        console.error("Datos incompletos recibidos:", data);
+      }
+    };
+
+    // Manejar el cierre de la conexión WebSocket
+    socket.onclose = function(event) {
+      console.log('Conexión WebSocket cerrada:', event);
+    };
+
+    // Manejar errores de la conexión WebSocket
+    socket.onerror = function(error) {
+      console.error('Error en la conexión WebSocket:', error);
+    };
+  </script>
+</body>
+</html>

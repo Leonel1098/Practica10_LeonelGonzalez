@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultados de Consulta</title>
+    <link rel="stylesheet" href="static/style_resultado.css">
+
+</head>
+<body>
+    <h1>Clientes en {{ ciudad }}</h1>
+    {% if clientes %}
+        <ul>
+            {% for cliente in clientes %}
+                <li>{{ cliente['nombre'] }} - Edad: {{ cliente['edad'] }} - Ciudad: {{ cliente['ciudad'] }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No se encontraron clientes en esta ciudad.</p>
+    {% endif %}
+    <p><a href="{{ url_for('index') }}">Volver al inicio</a></p>
+</body>
+</html>

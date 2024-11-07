@@ -1,0 +1,55 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1c1c1c; 
+    color: #f5f5f5; 
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #f5f5f5;
+}
+
+/* Estilo para los enlaces */
+a {
+    color: #4caf50; 
+    text-decoration: none;
+    font-weight: bold;
+    margin: 0 10px;
+}
+
+a:hover {
+    color: #81c784; 
+}
+
+/* Diseño de la tabla */
+table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #555; 
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: #333; 
+    color: #fff; 
+}
+
+td {
+    background-color: #222; 
+}
+
+/* Mensaje cuando no hay clientes */
+p {
+    text-align: center;
+    color: #ddd;
+}
