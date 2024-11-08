@@ -3,7 +3,7 @@ const fs = require('fs');
 const WebSocket = require('ws');
 const axios = require('axios');
 
-// Crear un servidor HTTP
+// Creamos el servidor http
 const server = http.createServer((req, res) => {
   const filePath = `public${req.url === '/' ? '/index.html' : req.url}`;
 
@@ -18,7 +18,7 @@ const server = http.createServer((req, res) => {
 
   const contentType = contentTypes[extname] || 'text/plain';
 
-  // Si el archivo existe, lo leemos y lo enviamos
+  //Verificamos que el archivo exista, si existe se lee y se envia 
   fs.readFile(filePath, (err, content) => {
     if (err) {
       res.writeHead(404, { 'Content-Type': 'text/plain' });
@@ -30,47 +30,46 @@ const server = http.createServer((req, res) => {
   });
 });
 
-// Crear un servidor WebSocket
+// Se crea el servidor websocket 
 const wss = new WebSocket.Server({ server });
 
-// Lista de criptomonedas a consultar
-const cryptocurrencies = ['bitcoin', 'ethereum', 'litecoin']; // Usamos los nombres de los tokens según CoinGecko
+// Se crea una lista que contiene los nombres de las criptomonedas a consultar,estos nombres son los que nuestra pagina de la que extraemos los datos contiene informacion.
+const cryptocurrencies = ['bitcoin', 'ethereum', 'litecoin','binance coin','cardano','solana']; 
 const urlTemplate = 'https://api.coingecko.com/api/v3/simple/price?ids={symbol}&vs_currencies=eur&include_24hr_change=true&include_24hr_vol=true';
 
-// Función para obtener los datos de una criptomoneda usando la API de CoinGecko
+// Función para obtener los datos de CoinGecko que nos da la informacion de la criptomoneda por medio de la API
 const fetchCryptoData = async (symbol) => {
-  const url = urlTemplate.replace('{symbol}', symbol); // Reemplazamos {symbol} con la criptomoneda actual
+  const url = urlTemplate.replace('{symbol}', symbol);
   let retries = 0;
   const maxRetries = 5;
   
   while (retries < maxRetries) {
     try {
-      const response = await axios.get(url); // Realizamos la solicitud con axios
+      const response = await axios.get(url);
       const data = response.data;
 
-      // Verificamos si la criptomoneda está presente en la respuesta
+      // Verificamos si la criptomoneda está presente en la respuesta y se extrae la informacion necesaria y disponible en la pagina
       if (data[symbol]) {
-        // Extraemos el precio en EUR, el cambio en las últimas 24h y el volumen
         const price = data[symbol].eur;
-        const change = data[symbol].eur_24h_change;  // Porcentaje de cambio
-        const volume = data[symbol].eur_24h_vol;    // Volumen
+        const change = data[symbol].eur_24h_change;  
+        const volume = data[symbol].eur_24h_vol;   
 
         return {
           symbol: `${symbol.toUpperCase()}/EUR`,
           price: price,
-          change: change,    // El porcentaje de cambio
-          volume: volume,    // El volumen
-          date: new Date().toISOString(), // Agregamos la fecha actual
+          change: change,   
+          volume: volume,  
+          date: new Date().toISOString(),
         };
       } else {
         throw new Error('No se encontraron datos para la criptomoneda solicitada');
       }
     } catch (error) {
       if (error.response && error.response.status === 429) {
-        // Si recibimos un error 429 (Demasiadas solicitudes), esperamos antes de reintentar
+        // En esta parte se crea una espera para seguir mostrando los datos al llegar al limite de solicitudes proporcionadas por la pagina. Esto debido a que al ser gratuita solamente proporciona un limite de solicitudes.
         console.log(`Límite de solicitudes alcanzado. Esperando antes de reintentar... (${retries + 1}/${maxRetries})`);
         retries++;
-        await new Promise(resolve => setTimeout(resolve, 10000)); // Esperar 10 segundos
+        await new Promise(resolve => setTimeout(resolve, 10000));
       } else {
         // Si es otro tipo de error, lo lanzamos
         throw new Error('Error al obtener datos de la criptomoneda: ' + error.message);
@@ -81,20 +80,20 @@ const fetchCryptoData = async (symbol) => {
   throw new Error('Se superó el número máximo de reintentos.');
 };
 
-// Conectar y enviar datos al cliente WebSocket
+// Aqui se realiza la conexion al servidor Websocket creado y se le envia la informacion obtenida
 wss.on('connection', (ws) => {
   console.log('Cliente conectado');
 
-  // Función para enviar datos de una criptomoneda seleccionada aleatoriamente
+  // Función para enviar datos de una criptomoneda seleccionada de forma aleatoria
   const sendCryptoData = async () => {
     try {
-      // Elegimos una criptomoneda aleatoria de la lista
+      // Elegimos una criptomoneda aleatoria de la lista para mostrar la informacion obtenida 
       const randomIndex = Math.floor(Math.random() * cryptocurrencies.length);
       const symbol = cryptocurrencies[randomIndex];
 
       const data = await fetchCryptoData(symbol);
       
-      // Enviar los datos de la criptomoneda seleccionada al cliente WebSocket
+      // Aqui se envia toda la informacion obtenida al servidor Websocket 
       ws.send(JSON.stringify(data));
 
       console.log('Datos enviados:', data);
@@ -103,10 +102,10 @@ wss.on('connection', (ws) => {
     }
   };
 
-  // Enviar los datos cada 5 segundos
+  // Aqui se define el tiempo en el que la informacion se enviara al servidor para ser actualizado, en este caso es de 5 segiundos
   const interval = setInterval(sendCryptoData, 5000);
 
-  // Enviar los datos inmediatamente al conectarse
+  //Al iniciar la conexion los datos se envian inmediatamente 
   sendCryptoData();
 
   // Limpiar el intervalo cuando el cliente se desconecta
@@ -116,7 +115,7 @@ wss.on('connection', (ws) => {
   });
 });
 
-// Escuchar en el puerto 8080
+// Se habilita el puerto en el que se cargara el servidor, en este caso se usara el puerto 8080
 server.listen(8080, () => {
   console.log('Servidor escuchando en http://localhost:8080');
 });

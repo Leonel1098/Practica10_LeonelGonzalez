@@ -21,12 +21,13 @@
   </div>
 
   <script>
-    // Establecer la conexión WebSocket
-    const socket = new WebSocket('ws://localhost:8080');  // Cambia la URL si es necesario
+    // Se establece la conexion con el servidro Websocket, si es necesario cambia la url 
+    const socket = new WebSocket('ws://localhost:8080'); 
 
     // Manejar el mensaje recibido desde el servidor
     socket.onmessage = function(event) {
-      const data = JSON.parse(event.data);  // Parseamos los datos recibidos como JSON
+      //Aqui se parsean los datos recibidos a tipo JSON para manejarlos
+      const data = JSON.parse(event.data); 
       console.log('Datos recibidos desde el servidor:', data);
 
       // Comprobamos si los datos existen y luego actualizamos la interfaz
